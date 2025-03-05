@@ -14,6 +14,7 @@ list.ForEach(Console.Write);
 Console.WriteLine();
 
 
+
 // Exercise 2
 Console.WriteLine("Exercise 2");
 Console.WriteLine("Input dictionary: ");
@@ -42,6 +43,7 @@ string json = JsonConvert.SerializeObject(dict, Formatting.Indented);
 // ProgrammingPracticum -> ProgrammingPracticum -> bin -> Release -> .exe
 string path = new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
 File.WriteAllText(Path.Combine(path, "dictionary.json"), json);
+
 
 
 // Exercise 3
