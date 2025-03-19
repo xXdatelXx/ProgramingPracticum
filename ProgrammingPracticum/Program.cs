@@ -11,6 +11,7 @@ time.SaveToJson(filename);
 Time loadedTime = Time.LoadFromJson(filename);
 Console.WriteLine(loadedTime);
 
+
 class Time {
    public int _hours { get; private set; }
    public int _minutes { get; private set; }
@@ -59,8 +60,8 @@ class Time {
 
    public void AddTime(int hours = 0, int minutes = 0, int seconds = 0)
    {
-      const int secondsInHours = 3600;
-      const int daySeconds = 8640;
+      const int secondsInHours = 60 * 60;
+      const int daySeconds = secondsInHours * 24;
       
       int totalSeconds = _hours * secondsInHours + _minutes * 60 + _seconds;
       totalSeconds += hours * secondsInHours + minutes * 60 + seconds;
