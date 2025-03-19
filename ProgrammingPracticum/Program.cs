@@ -11,13 +11,13 @@ time.SaveToJson(filename);
 Time loadedTime = Time.LoadFromJson(filename);
 Console.WriteLine(loadedTime);
 
-[Serializable]
 class Time {
    public int _hours { get; private set; }
    public int _minutes { get; private set; }
    public int _seconds { get; private set; }
    
-   public Time(int _hours, int _minutes, int _seconds) {
+   public Time(int _hours, int _minutes, int _seconds) 
+   {
       this._hours = _hours;
       this._minutes = _minutes;
       this._seconds = _seconds;
