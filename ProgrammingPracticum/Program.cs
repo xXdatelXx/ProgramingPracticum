@@ -1,18 +1,37 @@
-﻿Time time = new Time(23, 59, 50);
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+
+Time time = new Time(23, 59, 50);
 Console.WriteLine(time);  // 23:59:50
 time.AddTime(0, 0, 15);
 Console.WriteLine(time);  // 00:00:05
 
-class Time(int Hours, int Minutes, int Seconds)
-{
+string filename = "time.json";
+time.SaveToJson(filename);
+        
+Time loadedTime = Time.LoadFromJson(filename);
+Console.WriteLine(loadedTime);
+
+[Serializable]
+class Time {
+   public int _hours { get; private set; }
+   public int _minutes { get; private set; }
+   public int _seconds { get; private set; }
+   
+   public Time(int hours, int minutes, int seconds) {
+      _hours = hours;
+      _minutes = minutes;
+      _seconds = seconds;
+   }
+
    public void SetTime(int hours, int minutes, int seconds)
    {
       if (hours < 0 || hours >= 24 || minutes < 0 || minutes >= 60 || seconds < 0 || seconds >= 60)
          throw new ArgumentException("Недопустиме значення часу");
       
-      Hours = hours;
-      Minutes = minutes;
-      Seconds = seconds;
+      _hours = hours;
+      _minutes = minutes;
+      _seconds = seconds;
    }
 
    public void SetHours(int hours)
@@ -20,7 +39,7 @@ class Time(int Hours, int Minutes, int Seconds)
       if (hours is < 0 or >= 24)
          throw new ArgumentException("Hours must be between 0 and 24");
       
-      Hours = hours;
+      _hours = hours;
    }
 
    public void SetMinutes(int minutes)
@@ -28,7 +47,7 @@ class Time(int Hours, int Minutes, int Seconds)
       if (minutes is < 0 or >= 60)
          throw new ArgumentException("Minutes must be between 0 and 60");
       
-      Minutes = minutes;
+      _minutes = minutes;
    }
 
    public void SetSeconds(int seconds)
@@ -36,7 +55,7 @@ class Time(int Hours, int Minutes, int Seconds)
       if (seconds < 0 || seconds >= 60)
          throw new ArgumentException("Seconds must be between 0 and 60");
       
-      Seconds = seconds;
+      _seconds = seconds;
    }
 
    public void AddTime(int hours = 0, int minutes = 0, int seconds = 0)
@@ -44,15 +63,28 @@ class Time(int Hours, int Minutes, int Seconds)
       const int secondsInHours = 3600;
       const int daySeconds = 8640;
       
-      int totalSeconds = Hours * secondsInHours + Minutes * 60 + Seconds;
+      int totalSeconds = _hours * secondsInHours + _minutes * 60 + _seconds;
       totalSeconds += hours * secondsInHours + minutes * 60 + seconds;
       totalSeconds %= daySeconds;
 
-      Hours = totalSeconds / secondsInHours;
-      Minutes = (totalSeconds % secondsInHours) / 60;
-      Seconds = totalSeconds % 60;
+      _hours = totalSeconds / secondsInHours;
+      _minutes = (totalSeconds % secondsInHours) / 60;
+      _seconds = totalSeconds % 60;
    }
 
    public override string ToString() => 
-      $"{Hours:D2}:{Minutes:D2}:{Seconds:D2}";
+      $"{_hours:D2}:{_minutes:D2}:{_seconds:D2}";
+   
+   public void SaveToJson(string filename)
+   {
+      string json = JsonSerializer.Serialize(this);
+      File.WriteAllText(filename, json);
+   }
+
+   public static Time LoadFromJson(string filename)
+   {
+      string json = File.ReadAllText(filename);
+      Console.WriteLine(json);
+      return JsonSerializer.Deserialize<Time>(json);
+   }
 }
