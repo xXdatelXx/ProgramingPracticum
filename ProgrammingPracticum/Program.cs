@@ -18,7 +18,7 @@ class Time(int Hours, int Minutes, int Seconds)
    public void SetHours(int hours)
    {
       if (hours is < 0 or >= 24)
-         throw new ArgumentException("Недопустиме значення годин");
+         throw new ArgumentException("Hours must be between 0 and 24");
       
       Hours = hours;
    }
@@ -26,7 +26,7 @@ class Time(int Hours, int Minutes, int Seconds)
    public void SetMinutes(int minutes)
    {
       if (minutes is < 0 or >= 60)
-         throw new ArgumentException("Недопустиме значення хвилин");
+         throw new ArgumentException("Minutes must be between 0 and 60");
       
       Minutes = minutes;
    }
@@ -34,24 +34,25 @@ class Time(int Hours, int Minutes, int Seconds)
    public void SetSeconds(int seconds)
    {
       if (seconds < 0 || seconds >= 60)
-         throw new ArgumentException("Недопустиме значення секунд");
+         throw new ArgumentException("Seconds must be between 0 and 60");
       
       Seconds = seconds;
    }
 
    public void AddTime(int hours = 0, int minutes = 0, int seconds = 0)
    {
-      int totalSeconds = Hours * 3600 + Minutes * 60 + Seconds;
-      totalSeconds += hours * 3600 + minutes * 60 + seconds;
-      totalSeconds %= 86400; // 24 години в секундах
+      const int secondsInHours = 3600;
+      const int daySeconds = 8640;
+      
+      int totalSeconds = Hours * secondsInHours + Minutes * 60 + Seconds;
+      totalSeconds += hours * secondsInHours + minutes * 60 + seconds;
+      totalSeconds %= daySeconds;
 
-      Hours = totalSeconds / 3600;
-      Minutes = (totalSeconds % 3600) / 60;
+      Hours = totalSeconds / secondsInHours;
+      Minutes = (totalSeconds % secondsInHours) / 60;
       Seconds = totalSeconds % 60;
    }
 
-   public override string ToString()
-   {
-      return $"{Hours:D2}:{Minutes:D2}:{Seconds:D2}";
-   }
+   public override string ToString() => 
+      $"{Hours:D2}:{Minutes:D2}:{Seconds:D2}";
 }
