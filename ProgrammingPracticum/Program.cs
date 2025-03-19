@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 
 Time time = new Time(23, 59, 50);
 Console.WriteLine(time);  // 23:59:50
@@ -18,16 +17,16 @@ class Time {
    public int _minutes { get; private set; }
    public int _seconds { get; private set; }
    
-   public Time(int hours, int minutes, int seconds) {
-      _hours = hours;
-      _minutes = minutes;
-      _seconds = seconds;
+   public Time(int _hours, int _minutes, int _seconds) {
+      this._hours = _hours;
+      this._minutes = _minutes;
+      this._seconds = _seconds;
    }
 
    public void SetTime(int hours, int minutes, int seconds)
    {
       if (hours < 0 || hours >= 24 || minutes < 0 || minutes >= 60 || seconds < 0 || seconds >= 60)
-         throw new ArgumentException("Недопустиме значення часу");
+         throw new ArgumentException("Invalid time");
       
       _hours = hours;
       _minutes = minutes;
@@ -84,7 +83,6 @@ class Time {
    public static Time LoadFromJson(string filename)
    {
       string json = File.ReadAllText(filename);
-      Console.WriteLine(json);
       return JsonSerializer.Deserialize<Time>(json);
    }
 }
