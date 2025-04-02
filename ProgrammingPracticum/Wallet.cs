@@ -1,8 +1,6 @@
 ﻿namespace ProgrammingPracticum;
 
 public class Wallet(Dictionary<Currency, decimal> balances) : IWallet {
-   public decimal Currency => balances.Sum(x => x.Key.Rate * x.Value);
-   
    public decimal Amount(Currency currency) => balances.GetValueOrDefault(currency, 0);
 
    public void Add(Currency currency, decimal amount) {
