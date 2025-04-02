@@ -3,7 +3,7 @@
 public sealed class Exercise1 {
    public void Run() {
       LightCar car1 = new ("Deo", "Grey", 1000);
-      HeavyCar car2 = new ("Sitroen", "White", 2000);
+      HeavyCar car2 = new ("Kamaz", "White", 4000);
 
       car1.SetColor("Red");
       car2.SetWeight(3000);
